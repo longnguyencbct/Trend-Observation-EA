@@ -21,6 +21,8 @@ input double InpVolume = 0.01;                  //lots / money / percent size
 input LOT_MODE_ENUM InpLotMode=LOT_MODE_FIXED;// lot mode
 input int InpStopLoss = 100;                    //stop loss
 input int InpTakeProfit = 200;                  //take profit
+input bool InpStopLossTrailing = true;          //Trailing stoploss?
+input ENUM_TIMEFRAMES InpStopLossTrailingTimeframe = PERIOD_H1; //Trailing stoploss timeframe
 input CLOSE_MODE InpCloseCond = NO_CLOSING;     //Close modes
 input bool InpNewBarMode = true;                // execute every bar?
 

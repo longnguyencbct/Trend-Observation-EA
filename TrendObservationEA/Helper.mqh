@@ -15,6 +15,16 @@ bool IsNewBar(){
    }
    return false;
 }
+bool IsNewTrailSLBar(){
+   if(!InpNewBarMode){return true;}
+   static datetime previousTime=0;
+   datetime currentTime=iTime(currSymbol,InpStopLossTrailingTimeframe,0);
+   if(previousTime!=currentTime){
+      previousTime=currentTime;
+      return true;
+   }
+   return false;
+}
 
 bool CountOpenPositions(int &countBuy,int &countSell){
    countBuy = 0;
@@ -111,4 +121,53 @@ bool CheckLots(double &lots){
    }
    lots=(int)MathFloor(lots/step)*step;
    return  true;
+}
+
+// update stop loss
+void UpdateStopLoss(){
+   //return if no SL or fixed stop loss
+   if(InpStopLoss==0||!InpStopLossTrailing){return;}
+   if(!IsNewTrailSLBar()){return;}
+   //loop through open positions
+   int total= PositionsTotal();
+   for(int i=total-1;i>=0;i--){
+      ulong ticket=PositionGetTicket(i);
+      if(ticket<=0){Print("Failed to get position ticket"); return;}
+      if(!PositionSelectByTicket(ticket)){Print("Failed to select position by ticket"); return;}
+      ulong magic;
+      if(!PositionGetInteger(POSITION_MAGIC,magic)){Print("Failed to get magic"); return;}
+      if(magic==InpMagicnumber){
+         //get type
+         long type;
+         if(!PositionGetInteger(POSITION_TYPE,type)){Print("Failed to get position type");return;}
+         //get current sl and tp
+         double currSL,currTP;
+         if(!PositionGetDouble(POSITION_SL,currSL)){Print("Failed to get position stop loss");return;}
+         if(!PositionGetDouble(POSITION_TP,currTP)){Print("Failed to get position take profit");return;}
+         //calculate stop loss
+         double currPrice=type==POSITION_TYPE_BUY?currentTick.bid:currentTick.ask;
+         double prevPrice=type==POSITION_TYPE_BUY?PreviousTickBid:PreviousTickAsk;
+         int n           =type==POSITION_TYPE_BUY?1:-1;
+         double newSL = NormalizeDouble(currSL+(currPrice-prevPrice)*n,currDigits);
+         
+         //check if new stop loss is closer to current price than existing stop loss
+         if((newSL*n)<(currSL*n)||NormalizeDouble(MathAbs(newSL-currSL),currDigits)<currPoint){
+            //Print("No new stop loss needed");
+            continue;
+         }
+         //check for stop level
+         long level = SymbolInfoInteger(currSymbol,SYMBOL_TRADE_STOPS_LEVEL);
+         if(level!=0&&MathAbs(currPrice-newSL)<=level*currPoint){
+            //Print("New stop loss inside stop level");
+            continue;
+         }
+         
+         // modify position with new stop loss
+         if(!trade.PositionModify(ticket,newSL,currTP)){
+            Print("Failed to modify position, ticket:",(string)ticket,", currSL:",(string)currSL,
+            ", newSL:",(string)newSL,", currTP:",(string)currTP);
+            return;
+         }
+      }
+   }
 }

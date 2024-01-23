@@ -63,6 +63,8 @@ void OnTick()
    
    currPoint=_Point;
    currDigits=_Digits;
+   UpdateStopLoss();
+   
    //check if current tick is a bar open tick
    if(!IsNewBar()){return;}
    
@@ -80,7 +82,6 @@ void OnTick()
    
    //count open positions
    if(!CountOpenPositions(cntBuy,cntSell)){return;}
-   
    // Check for Buy Order
    if(!CheckOrder(true)){return;}
    // Check for Sell Order
