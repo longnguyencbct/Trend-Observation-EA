@@ -4,7 +4,16 @@
 //| Trigger function                                                 |
 //+------------------------------------------------------------------+
 bool Trigger(bool buy_sell){
-   return true;
+   return AROON_Trigger(buy_sell)&&InpAROONPeriod!=0;
+}
+bool AROON_Trigger(bool buy_sell){
+   if(buy_sell){//buy
+      return   cntBuy==0&&
+               curr_state==UP_TREND;
+   }else{//sell
+      return   cntSell==0&&
+               curr_state==DOWN_TREND;
+   }
 }
 //+------------------------------------------------------------------+
 //| Filter function                                                  |
@@ -17,5 +26,11 @@ bool Filter(bool buy_sell){
 //| Close function                                                   |
 //+------------------------------------------------------------------+
 void Close(){
-   
+   //check for close when there is a new state or new direction
+   if(new_state){
+      if(InpCloseCond!=NO_CLOSING){
+         ClosePositions(0);
+      }
+      new_state=false;
+   }
 }

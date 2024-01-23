@@ -6,8 +6,9 @@
 
 //check if we hace a bar open tick
 bool IsNewBar(){
+   if(!InpNewBarMode){return true;}
    static datetime previousTime=0;
-   datetime currentTime=iTime(_Symbol,MainTimeframe,0);
+   datetime currentTime=iTime(currSymbol,MainTimeframe,0);
    if(previousTime!=currentTime){
       previousTime=currentTime;
       return true;
@@ -37,11 +38,11 @@ bool CountOpenPositions(int &countBuy,int &countSell){
 
 bool NormalizePrice(double price,double &normalizedPrice){
    double tickSize=0;
-   if(!SymbolInfoDouble(_Symbol,SYMBOL_TRADE_TICK_SIZE,tickSize)){
+   if(!SymbolInfoDouble(currSymbol,SYMBOL_TRADE_TICK_SIZE,tickSize)){
       Print("Failed to get tick size");
       return false;
    }
-   normalizedPrice=NormalizeDouble(MathRound(price/tickSize)*tickSize,_Digits);
+   normalizedPrice=NormalizeDouble(MathRound(price/tickSize)*tickSize,currDigits);
    return true;
 }
 
@@ -76,9 +77,9 @@ bool CalculateLots(double slDistance, double &lots){
       lots=InpVolume;
    }
    else{
-      double tickSize=SymbolInfoDouble(_Symbol,SYMBOL_TRADE_TICK_SIZE);
-      double tickValue=SymbolInfoDouble(_Symbol,SYMBOL_TRADE_TICK_VALUE);
-      double volumeStep=SymbolInfoDouble(_Symbol,SYMBOL_VOLUME_STEP);
+      double tickSize=SymbolInfoDouble(currSymbol,SYMBOL_TRADE_TICK_SIZE);
+      double tickValue=SymbolInfoDouble(currSymbol,SYMBOL_TRADE_TICK_VALUE);
+      double volumeStep=SymbolInfoDouble(currSymbol,SYMBOL_VOLUME_STEP);
       
       double riskMoney = InpLotMode==LOT_MODE_MONEY?InpVolume:AccountInfoDouble(ACCOUNT_EQUITY)*InpVolume*0.01;
       double moneyVolumeStep=(slDistance/tickSize)*tickValue*volumeStep;
@@ -94,9 +95,9 @@ bool CalculateLots(double slDistance, double &lots){
 //check lots for min, max and step
 bool CheckLots(double &lots){
    
-   double min = SymbolInfoDouble(_Symbol,SYMBOL_VOLUME_MIN);
-   double max = SymbolInfoDouble(_Symbol,SYMBOL_VOLUME_MAX);
-   double step = SymbolInfoDouble(_Symbol,SYMBOL_VOLUME_STEP);
+   double min = SymbolInfoDouble(currSymbol,SYMBOL_VOLUME_MIN);
+   double max = SymbolInfoDouble(currSymbol,SYMBOL_VOLUME_MAX);
+   double step = SymbolInfoDouble(currSymbol,SYMBOL_VOLUME_STEP);
    
    if(lots<min){
       Print("Lot size will be set to the minimum allowable volume");

@@ -45,9 +45,9 @@ bool CheckOrder(bool buy_sell){
       // conditions to open a buy position
       if(Trigger(true)&&Filter(true)){
          Print("Open buy");
-         openTimeBuy=iTime(_Symbol,MainTimeframe,0);
-         double sl = currentTick.bid-InpStopLoss*_Point;
-         double tp = InpTakeProfit==0?0:currentTick.bid+InpTakeProfit*_Point;
+         openTimeBuy=iTime(currSymbol,MainTimeframe,0);
+         double sl = currentTick.bid-InpStopLoss*currPoint;
+         double tp = InpTakeProfit==0?0:currentTick.bid+InpTakeProfit*currPoint;
          if(!NormalizePrice(sl,sl)){return false;}
          if(!NormalizePrice(tp,tp)){return false;}
          
@@ -55,16 +55,16 @@ bool CheckOrder(bool buy_sell){
          double lots;
          if(!CalculateLots(currentTick.bid-sl,lots)){return false;}
          
-         trade.PositionOpen(_Symbol,ORDER_TYPE_BUY,lots,currentTick.ask,sl,tp,"Bollinger bands EA");  
+         trade.PositionOpen(currSymbol,ORDER_TYPE_BUY,lots,currentTick.ask,sl,tp,"Bollinger bands EA");  
       }
       return true;
    }else{//sell
       // conditions to open a sell position
       if(Trigger(false)&&Filter(false)){
          Print("Open sell");
-         openTimeSell=iTime(_Symbol,MainTimeframe,0);
-         double sl = currentTick.ask+InpStopLoss*_Point;
-         double tp = InpTakeProfit==0?0:currentTick.ask-InpTakeProfit*_Point;
+         openTimeSell=iTime(currSymbol,MainTimeframe,0);
+         double sl = currentTick.ask+InpStopLoss*currPoint;
+         double tp = InpTakeProfit==0?0:currentTick.ask-InpTakeProfit*currPoint;
          if(!NormalizePrice(sl,sl)){return false;}
          if(!NormalizePrice(tp,tp)){return false;}
          
@@ -72,7 +72,7 @@ bool CheckOrder(bool buy_sell){
          double lots;
          if(!CalculateLots(sl-currentTick.ask,lots)){return false;}
          
-         trade.PositionOpen(_Symbol,ORDER_TYPE_SELL,lots,currentTick.bid,sl,tp,"Bollinger bands EA");  
+         trade.PositionOpen(currSymbol,ORDER_TYPE_SELL,lots,currentTick.bid,sl,tp,"Bollinger bands EA");  
       }
       return true;
    }

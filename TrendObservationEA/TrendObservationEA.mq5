@@ -23,13 +23,16 @@ int OnInit()
    if(!CheckInputs()){return INIT_PARAMETERS_INCORRECT;}
    trade.SetExpertMagicNumber(InpMagicnumber);
    
+   currSymbol=_Symbol;
+   currPoint=_Point;
+   currDigits=_Digits;
    
    // Init AROON
    if(InpAROONPeriod>0){
       //set Main Timeframe
       MainTimeframe=InpAROONTimeframe;
       
-      AROON_handle=iCustom(_Symbol,MainTimeframe,"Custom\\aroon",InpAROONPeriod,InpAROONShift);
+      AROON_handle=iCustom(currSymbol,MainTimeframe,"Custom\\aroon",InpAROONPeriod,InpAROONShift);
       
       if(AROON_handle==INVALID_HANDLE){
          Alert("Failed to create AROON indicatior handle");
@@ -57,13 +60,17 @@ void OnDeinit(const int reason)
 //+------------------------------------------------------------------+
 void OnTick()
 {
+   
+   currPoint=_Point;
+   currDigits=_Digits;
    //check if current tick is a bar open tick
    if(!IsNewBar()){return;}
+   
    
    PreviousTickAsk=currentTick.ask;
    PreviousTickBid=currentTick.bid;
    //Get current tick
-   if(!SymbolInfoTick(_Symbol,currentTick)){Print("Failed to get tick"); return;}
+   if(!SymbolInfoTick(currSymbol,currentTick)){Print("Failed to get tick"); return;}
    
    // Get AROON indicator values
    if(!AROON_OnTick()){return;}

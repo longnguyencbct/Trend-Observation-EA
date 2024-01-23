@@ -9,6 +9,7 @@ enum MARKET_STATE{
    NOT_TRENDING_FROM_DOWN
 };
 // Trend Observation variables
+MARKET_STATE prev_state;
 MARKET_STATE curr_state;
 bool new_state=false;
 
@@ -21,6 +22,9 @@ double AROON_Down[];
 MqlTick currentTick;
 CTrade trade;
 ENUM_TIMEFRAMES MainTimeframe;
+string currSymbol;
+double currPoint;
+int currDigits;
 
 datetime openTimeBuy=0;
 datetime openTimeSell=0;
