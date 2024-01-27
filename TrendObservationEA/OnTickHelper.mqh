@@ -46,7 +46,7 @@ bool CheckOrder(bool buy_sell){
       if(Trigger(true)&&Filter(true)){
          Print("Open buy");
          openTimeBuy=iTime(currSymbol,MainTimeframe,0);
-         double sl = currentTick.bid-InpStopLoss*currPoint;
+         double sl = InpStopLoss==0?0:currentTick.bid-InpStopLoss*currPoint;
          double tp = InpTakeProfit==0?0:currentTick.bid+InpTakeProfit*currPoint;
          if(!NormalizePrice(sl,sl)){return false;}
          if(!NormalizePrice(tp,tp)){return false;}
@@ -63,7 +63,7 @@ bool CheckOrder(bool buy_sell){
       if(Trigger(false)&&Filter(false)){
          Print("Open sell");
          openTimeSell=iTime(currSymbol,MainTimeframe,0);
-         double sl = currentTick.ask+InpStopLoss*currPoint;
+         double sl = InpStopLoss==0?0:currentTick.ask+InpStopLoss*currPoint;
          double tp = InpTakeProfit==0?0:currentTick.ask-InpTakeProfit*currPoint;
          if(!NormalizePrice(sl,sl)){return false;}
          if(!NormalizePrice(tp,tp)){return false;}

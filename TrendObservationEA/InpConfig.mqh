@@ -15,6 +15,18 @@ enum CLOSE_MODE{
    CLOSE_WHEN_NEW_STATE,      // close when new state
    CLOSE_WHEN_NEW_DIRECTION   // close when new direction
 };
+enum ENUM_CUSTOM_PERF_CRITERIUM_METHOD
+{
+   NO_CUSTOM_METRIC,                            //No Custom Metric
+   STANDARD_PROFIT_FACTOR,                      //Standard Profit Factor
+   MODIFIED_PROFIT_FACTOR                       //Modified Profit Factor
+};
+enum ENUM_DIAGNOSTIC_LOGGING_LEVEL
+{
+   DIAG_LOGGING_NONE,                           //NONE
+   DIAG_LOGGING_LOW,                            //LOW - Major Diagnostics Only
+   DIAG_LOGGING_HIGH                            //HIGH - All Diagnostics (Warning - Use with caution)
+};
 input group "==== General ====";
 static input long InpMagicnumber= 1336;         // magic number
 input double InpVolume = 0.01;                  //lots / money / percent size
@@ -32,6 +44,9 @@ input int InpAROONPeriod = 25;                        //Period (number of bars t
 input int InpAROONShift = 0;                          //Horizontal Shift;
 input AROON_MODE InpAROONMode = COMPARE_LEVEL_MODE;   //AROON Mode
 input int InpAROONFilterVar = 50;                     //Filter level/difference
+input group "=== Custom Criteria ==="
+input ENUM_CUSTOM_PERF_CRITERIUM_METHOD   InpCustomPerfCriterium    = MODIFIED_PROFIT_FACTOR;   //Custom Performance Criterium
+input ENUM_DIAGNOSTIC_LOGGING_LEVEL       InpDiagnosticLoggingLevel = DIAG_LOGGING_LOW;         //Diagnostic Logging Level
 
 
 bool CheckInputs(){
