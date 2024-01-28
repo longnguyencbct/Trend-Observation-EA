@@ -12,6 +12,7 @@ enum MARKET_STATE{
 MARKET_STATE prev_state;
 MARKET_STATE curr_state;
 bool new_state=false;
+bool one_trade_check=true;
 
 //AROON Indicator variables
 int AROON_handle;
@@ -31,3 +32,4 @@ datetime openTimeSell=0;
 double PreviousTickAsk;
 double PreviousTickBid;
 int cntBuy, cntSell;
+int prev_cntBuy, prev_cntSell;

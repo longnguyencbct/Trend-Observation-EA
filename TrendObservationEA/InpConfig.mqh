@@ -46,6 +46,8 @@ input int InpAROONShift = 0;                          //Horizontal Shift;
 input AROON_MODE InpAROONMode = COMPARE_LEVEL_MODE;   //AROON Mode
 input int InpAROONLevelVar = 50;                      //Filter level
 input int InpAROONDiffVar = 50;                       //Filter difference
+input group "==== FILTER ====";
+input bool InpAROONOneTrade = false;                  //One trade filter?
 input group "=== Custom Criteria ==="
 input ENUM_CUSTOM_PERF_CRITERIUM_METHOD   InpCustomPerfCriterium    = MODIFIED_PROFIT_FACTOR;   //Custom Performance Criterium
 input ENUM_DIAGNOSTIC_LOGGING_LEVEL       InpDiagnosticLoggingLevel = DIAG_LOGGING_LOW;         //Diagnostic Logging Level

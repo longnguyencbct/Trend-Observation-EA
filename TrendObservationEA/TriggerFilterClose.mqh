@@ -9,10 +9,12 @@ bool Trigger(bool buy_sell){
 bool AROON_Trigger(bool buy_sell){
    if(buy_sell){//buy
       return   cntBuy==0&&
-               curr_state==UP_TREND;
+               curr_state==UP_TREND&&
+               one_trade_check;
    }else{//sell
       return   cntSell==0&&
-               curr_state==DOWN_TREND;
+               curr_state==DOWN_TREND&&
+               one_trade_check;
    }
 }
 //+------------------------------------------------------------------+

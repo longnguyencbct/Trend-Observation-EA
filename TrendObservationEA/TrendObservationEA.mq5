@@ -80,7 +80,8 @@ void OnTick()
    
    // Trend Observation
    TrendObservation();
-   
+   //Close condition
+   Close();
    //count open positions
    if(!CountOpenPositions(cntBuy,cntSell)){return;}
    // Check for Buy Order
@@ -88,10 +89,13 @@ void OnTick()
    // Check for Sell Order
    if(!CheckOrder(false)){return;}
    
+   prev_cntBuy=cntBuy;
+   prev_cntSell=cntSell;
    if(!CountOpenPositions(cntBuy,cntSell)){return;}
-   //Close condition
-   Close();
-   
+   // new order check
+   if(cntBuy-prev_cntBuy==1||cntSell-prev_cntSell==1){
+      if(InpAROONOneTrade){one_trade_check=false;}
+   }
 }
 double OnTester()  
 {
