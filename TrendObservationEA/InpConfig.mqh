@@ -8,7 +8,8 @@ enum LOT_MODE_ENUM{
 };
 enum AROON_MODE{
    COMPARE_LEVEL_MODE,        //compare using level
-   COMPARE_UP_DOWN_MODE       //compare up and down
+   COMPARE_UP_DOWN_MODE,      //compare up and down
+   COMPARE_BOTH_MODE          //compare both
 };
 enum CLOSE_MODE{
    NO_CLOSING,                // no closing condition
@@ -43,7 +44,8 @@ input ENUM_TIMEFRAMES InpAROONTimeframe = PERIOD_H1;  //Timeframe
 input int InpAROONPeriod = 25;                        //Period (number of bars to count, 0=off)
 input int InpAROONShift = 0;                          //Horizontal Shift;
 input AROON_MODE InpAROONMode = COMPARE_LEVEL_MODE;   //AROON Mode
-input int InpAROONFilterVar = 50;                     //Filter level/difference
+input int InpAROONLevelVar = 50;                      //Filter level
+input int InpAROONDiffVar = 50;                       //Filter difference
 input group "=== Custom Criteria ==="
 input ENUM_CUSTOM_PERF_CRITERIUM_METHOD   InpCustomPerfCriterium    = MODIFIED_PROFIT_FACTOR;   //Custom Performance Criterium
 input ENUM_DIAGNOSTIC_LOGGING_LEVEL       InpDiagnosticLoggingLevel = DIAG_LOGGING_LOW;         //Diagnostic Logging Level
@@ -74,8 +76,12 @@ bool CheckInputs(){
       Alert("Wrong input: AROON Shift < 0");
       return(false);
    }
-   if(InpAROONFilterVar<0){
-      Alert("Wrong input: AROON Filter level < 0");
+   if(InpAROONLevelVar<0){
+      Alert("Wrong input: AROON Level Var < 0");
+      return(false);
+   }
+   if(InpAROONDiffVar<0){
+      Alert("Wrong input: AROON Difference Var < 0");
       return(false);
    }
    return true;
