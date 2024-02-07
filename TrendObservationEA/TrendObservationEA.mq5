@@ -44,6 +44,8 @@ int OnInit()
       ArraySetAsSeries(AROON_Down,true);
    }
    
+   if(!InitCustomCriteria()){return INIT_PARAMETERS_INCORRECT;}
+   
    return(INIT_SUCCEEDED);
 }
 //+------------------------------------------------------------------+
@@ -61,6 +63,7 @@ void OnDeinit(const int reason)
 //+------------------------------------------------------------------+
 void OnTick()
 {
+   UpdateHistoryArray();
    
    currPoint=_Point;
    currDigits=_Digits;
@@ -114,6 +117,16 @@ double OnTester()
       if(numTrades < 250)
          customPerformanceMetric = 0.0;
    } 
+   else if(InpCustomPerfCriterium == CAGR_OVER_MEAN_DD)
+   {
+      int numTrades = CagrOverMeanDD(customPerformanceMetric);
+      
+      //IF NUMBER OF TRADES < 250 THEN NO STATISTICAL SIGNIFICANCE, SO DISREGARD RESULTS (PROBABLE THAT GOOD 
+      //RESULTS CAUSED BY RANDOM CHANCE / LUCK, THAT WOULD NOT BE REPEATABLE IN FUTURE PERFORMANCE).
+      //IF THE TRADING SYSTEM USUALLY GENERATES A NUMBER OF TRADES GREATLY IN EXCESS OF THIS THEN ADVISABLE TO INCREASE THIS THRESHOLD VALUE
+      if(numTrades < 250)
+         customPerformanceMetric = 0.0;
+   }
    else if(InpCustomPerfCriterium == NO_CUSTOM_METRIC)
    {
       customPerformanceMetric = 0.0;

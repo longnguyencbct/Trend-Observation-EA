@@ -20,7 +20,8 @@ enum ENUM_CUSTOM_PERF_CRITERIUM_METHOD
 {
    NO_CUSTOM_METRIC,                            //No Custom Metric
    STANDARD_PROFIT_FACTOR,                      //Standard Profit Factor
-   MODIFIED_PROFIT_FACTOR                       //Modified Profit Factor
+   MODIFIED_PROFIT_FACTOR,                      //Modified Profit Factor
+   CAGR_OVER_MEAN_DD                            //CAGR/MeanDD
 };
 enum ENUM_DIAGNOSTIC_LOGGING_LEVEL
 {
@@ -49,7 +50,7 @@ input int InpAROONDiffVar = 50;                       //Filter difference
 input group "==== FILTER ====";
 input bool InpAROONOneTrade = false;                  //One trade filter?
 input group "=== Custom Criteria ==="
-input ENUM_CUSTOM_PERF_CRITERIUM_METHOD   InpCustomPerfCriterium    = MODIFIED_PROFIT_FACTOR;   //Custom Performance Criterium
+input ENUM_CUSTOM_PERF_CRITERIUM_METHOD   InpCustomPerfCriterium    = CAGR_OVER_MEAN_DD;   //Custom Performance Criterium
 input ENUM_DIAGNOSTIC_LOGGING_LEVEL       InpDiagnosticLoggingLevel = DIAG_LOGGING_LOW;         //Diagnostic Logging Level
 
 
