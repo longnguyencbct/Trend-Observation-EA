@@ -19,6 +19,10 @@ int AROON_handle;
 double AROON_Up[];
 double AROON_Down[];
 
+// time filter variables
+string curr_time;
+
+
 // Custom Criteria variables
 int      PreviousHourlyTasksRun  = -1;          //Set to -1 so that hourly tasks run immediately
 double   EquityHistoryArray[];                  //Used to store equity at intermittent time intervals when using the Strategy Tester in order to calculate CAGR/MeanDD perf metric

@@ -39,7 +39,6 @@ input bool InpStopLossTrailing = true;          //Trailing stoploss?
 input ENUM_TIMEFRAMES InpStopLossTrailingTimeframe = PERIOD_H1; //Trailing stoploss timeframe
 input CLOSE_MODE InpCloseCond = NO_CLOSING;     //Close modes
 input bool InpNewBarMode = true;                // execute every bar?
-
 input group "==== AROON ====";
 input ENUM_TIMEFRAMES InpAROONTimeframe = PERIOD_H1;  //Timeframe
 input int InpAROONPeriod = 25;                        //Period (number of bars to count, 0=off)
@@ -49,6 +48,11 @@ input int InpAROONLevelVar = 50;                      //Filter level
 input int InpAROONDiffVar = 50;                       //Filter difference
 input group "==== FILTER ====";
 input bool InpAROONOneTrade = false;                  //One trade filter?
+input bool InpTimeFilter =  true;                     //Time Filter?
+input int InpStartTimeHour=0;                         //Start Trading Hour
+input int InpStartTimeMinute=5;                       //Start Trading Minute
+input int InpEndTimeHour=23;                          //End Trading Hour
+input int InpEndTimeMinute=55;                        //End Trading Minute
 input group "=== Custom Criteria ==="
 input ENUM_CUSTOM_PERF_CRITERIUM_METHOD   InpCustomPerfCriterium    = CAGR_OVER_MEAN_DD;   //Custom Performance Criterium
 input ENUM_DIAGNOSTIC_LOGGING_LEVEL       InpDiagnosticLoggingLevel = DIAG_LOGGING_LOW;         //Diagnostic Logging Level
@@ -85,6 +89,26 @@ bool CheckInputs(){
    }
    if(InpAROONDiffVar<0){
       Alert("Wrong input: AROON Difference Var < 0");
+      return(false);
+   }
+   if(!(InpStartTimeHour>=0&&InpStartTimeHour<=23)){
+      Alert("Wrong input: Start Time Hour not in range [0;23]");
+      return(false);
+   }
+   if(!(InpEndTimeHour>=0&&InpEndTimeHour<=23)){
+      Alert("Wrong input: End Time Hour not in range [0;23]");
+      return(false);
+   }
+   if(!(InpStartTimeMinute>=0&&InpStartTimeMinute<=59)){
+      Alert("Wrong input: Start Time Minute not in range [0;59]");
+      return(false);
+   }
+   if(!(InpEndTimeMinute>=0&&InpEndTimeMinute<=59)){
+      Alert("Wrong input: End Time Minute not in range [0;59]");
+      return(false);
+   }
+   if(InpStartTimeHour>InpEndTimeHour){
+      Alert("Wrong input: Start Time Hour is bigger than End Time Hour");
       return(false);
    }
    return true;

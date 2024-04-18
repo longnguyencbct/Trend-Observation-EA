@@ -21,7 +21,30 @@ bool AROON_Trigger(bool buy_sell){
 //| Filter function                                                  |
 //+------------------------------------------------------------------+
 bool Filter(bool buy_sell){
+   if(!CheckTradingTime()){return false;}
    return true;
+}
+
+bool CheckTradingTime(){
+   if(InpTimeFilter){
+      // get int value of curr_time
+      int curr_hour=int(StringSubstr(curr_time,0,2));
+      int curr_minute=int(StringSubstr(curr_time,3,2));
+      
+      if(curr_hour>InpStartTimeHour&&curr_hour<InpEndTimeHour){return true;}
+      else if(curr_hour==InpStartTimeHour){
+         if(curr_minute>=InpStartTimeMinute){return true;}
+         else{return false;}
+      }
+      else if(curr_hour==InpEndTimeHour){
+         if(curr_minute<InpEndTimeMinute){return true;}
+         else{return false;}
+      }
+      else{return false;}
+   }
+   else{
+      return true;
+   }
 }
 
 //+------------------------------------------------------------------+
@@ -34,5 +57,8 @@ void Close(){
          ClosePositions(0);
       }
       new_state=false;
+   }
+   if(!CheckTradingTime()){
+      ClosePositions(0);
    }
 }

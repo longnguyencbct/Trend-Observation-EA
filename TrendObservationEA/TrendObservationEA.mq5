@@ -69,9 +69,9 @@ void OnTick()
    currDigits=_Digits;
    UpdateStopLoss();
    
+   curr_time=TimeToString(TimeCurrent(),TIME_MINUTES);
    //check if current tick is a bar open tick
-   if(!IsNewBar()){return;}
-   
+   if(!IsNewBar()){return;} 
    
    PreviousTickAsk=currentTick.ask;
    PreviousTickBid=currentTick.bid;
@@ -114,7 +114,7 @@ double OnTester()
       
       //IF NUMBER OF TRADES < 250 THEN NO STATISTICAL SIGNIFICANCE, SO DISREGARD RESULTS (PROBABLE THAT GOOD 
       //RESULTS CAUSED BY RANDOM CHANCE / LUCK, THAT WOULD NOT BE REPEATABLE IN FUTURE PERFORMANCE)
-      if(numTrades < 250)
+      if(numTrades < 100)
          customPerformanceMetric = 0.0;
    } 
    else if(InpCustomPerfCriterium == CAGR_OVER_MEAN_DD)
@@ -124,7 +124,7 @@ double OnTester()
       //IF NUMBER OF TRADES < 250 THEN NO STATISTICAL SIGNIFICANCE, SO DISREGARD RESULTS (PROBABLE THAT GOOD 
       //RESULTS CAUSED BY RANDOM CHANCE / LUCK, THAT WOULD NOT BE REPEATABLE IN FUTURE PERFORMANCE).
       //IF THE TRADING SYSTEM USUALLY GENERATES A NUMBER OF TRADES GREATLY IN EXCESS OF THIS THEN ADVISABLE TO INCREASE THIS THRESHOLD VALUE
-      if(numTrades < 250)
+      if(numTrades < 100)
          customPerformanceMetric = 0.0;
    }
    else if(InpCustomPerfCriterium == NO_CUSTOM_METRIC)
